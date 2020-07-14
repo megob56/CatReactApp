@@ -7,58 +7,66 @@ global.fetch = jest.fn(() =>
 		json: () =>
 			Promise.resolve([
 				{
-					name: "breedName",
+          name: "catBreed",
 				},
 			]),
 	})
 );
 
-describe("when running the app", () => {
-  const wrapper = shallow(<App />);
+describe("When running the app", () => {
+	const wrapper = shallow(<App />);
+	
+	it("should render the App", () => {
+		expect(wrapper.length).toBe(1); 
+	});
+
+	it("should display a open modal button", () => {
+		expect(wrapper.find(".js-open-modal-button").type()).toBe("button");
+		expect(wrapper.find(".js-open-modal-button").text()).toBe("Open");
+	});
+
+	it("should not display the cat modal", () => {
+		expect(wrapper.state().isModalOpen).toBe(false);
+  });
   
-  it("should render the app", () => {
-    expect(wrapper.length).toBe(1);
-  })
-
-  it("should render display an open modal button", () => {
-    expect(wrapper.find('.js-open-modal-button').length).toBe(1);
-    expect(wrapper.find('.js-open-modal-button').text()).toBe("Open");
-  })
-
-  it("should not display the modal", () => {
-    expect(wrapper.state().isModalOpen).toBe(false)
-  })
-
-  describe("When the modal is opened by clicking the button", () => {
+  describe("When clicking the open modal button", () => {
     beforeAll(() => {
-      wrapper.find('.js-open-modal-button').simulate("click");
+      wrapper.find('.js-open-modal-button').simulate('click')
     });
-    
-    it("should display a the modal", () => {
+
+    it("should open the cat modal", () => {
       expect(wrapper.state().isModalOpen).toBe(true);
-    })
-   
+    });
+
+    it("should make an api call", () => {
+      expect(fetch).toHaveBeenCalledWith("https://api.thecatapi.com/v1/breeds");
+    });
+
+    it("should open the cat modal with a close button & a drop down list", () => {
+      expect(wrapper.find('.js-close-modal-button').length).toBe(1);
+      expect(wrapper.find('.js-select-cat-breed-menu').length).toBe(1);
+    });
+
   });
 
-  describe("When the modal is closed after selecting a cat breed", () => {
+  describe("When clicking the close modal button", () => {
     beforeAll(() => {
       wrapper.setState({isModalOpen: true});
-      wrapper.setState({breedId: "CAT"})
-			wrapper.find(".js-close-modal-button").simulate("click");
+      wrapper.find('.js-close-modal-button').simulate('click');
     });
-    
+
     it("should close the modal", () => {
       expect(wrapper.state().isModalOpen).toBe(false);
-    })
+    });
 
-    it("should display an image of a cat", () => {
-      expect(wrapper.find("js-cat-image").length).toBe(1);
-    })
+    it("should call the api", () => {
+      expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/breeds/search?q=`);
+    });
 
-    it("should display an image of a cat of the selected breed", () => {
-      expect(wrapper.find("js-cat-image").prop("src")).toBe("https://api.thecatapi.com/images/search?breed_id=CAT");
-    })
-   
-  });
+    it("should return an image of a cat", () => {
+      expect(wrapper.find('.js-image-of-cat').length).toBe(1);
+    });
+  }); 
+  
 
 });

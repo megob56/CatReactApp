@@ -1,69 +1,52 @@
 import React from 'react';
-import Modal from './Modal';
+import Modal from "react-modal";
 
 import './App.css';
 
 class App extends React.Component {
   constructor(props){
     super(props);
+
     this.state = {
       isModalOpen: false,
-      value: "",
       breeds: [],
-      selectBreed: "new cat",
+      selectedBreed: "",
       breedId: null,
-      catImage: null
+      catImage: null,
     }
 
     this.closeModal = this.closeModal.bind(this);
-    this.changeBreed = this.changeBreed.bind(this);
-    this.changeCatImage = this.changeCatImage.bind(this);
-  };
+  }
 
   openModal = () => {
     this.setState({
-      isModalOpen:true
+      isModalOpen: true
     });
   }
 
-  closeModal = () => {
+  async closeModal() {
     this.setState({
-      isModalOpen:false
+      isModalOpen: false
     });
 
-    this.changeBreed();
+    await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${this.state.selectedBreed}`)
+    .then((response) => response.json())
+    .then((data) => this.setState({ breedId: data.id }));
+
+    console.log(this.state.breedId)
+    
+    // fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=beng`)
+    // .then((response) => response.json())
+    // .then((data) => this.setState({ catImage: data[0].url }));
   }
 
   handleChange = (e) => {
     this.setState({
-      value: e.target.value
+      selectedBreed: e.target.value
     });
+
+    console.log(this.state.selectedBreed);
   }
-
-  changeBreed(newBreed) {
-    this.setState({
-      selectBreed: newBreed
-    })
-
-    console.log(this.state.selectBreed);
-
-    this.changeCatImage();
-  }
-
-  changeCatImage(){
-
-    fetch(`https://api.thecatapi.com/v1/breeds/search?q=${this.state.selectBreed}`)
-      .then((response) => response.json())
-      .then((data) => this.setState({ breedId: data.id }))
-    
-    
-    
-    fetch(`https://api.thecatapi.com/images/search?breed_id=${this.state.breedId}`)
-    .then((response) => response.json())
-    .then((data) => this.setState({ catImage: data[0].url }));
-
-  }
- 
 
   componentDidMount() {
     let initialBreeds = [];
@@ -74,33 +57,27 @@ class App extends React.Component {
           return x.name
         });
 
-        console.log(initialBreeds);
+        // console.log(initialBreeds);
         this.setState({breeds: initialBreeds});
+    }));
+  }
 
-      })) 
-    
-    }
-
-  render() {
+  render(){
     return(
-      <div className="App">
-        <Modal 
-              show={this.state.isModalOpen} 
-              handleClose={this.closeModal} 
-              handleChange={this.handleChange} 
-              selectValue={this.state.value} 
-              choices={this.state.breeds}
-        >
-          <h1>Choose A Cat Breed</h1>
+      <div>
+        <Modal isOpen = { this.state.isModalOpen }>
+          <button className="js-close-modal-button" onClick={ this.closeModal }>Close</button>
+          <h1 className="js-modal-title">Choose Your Favorite Cat Breed</h1>
+          <select className='js-select-cat-breed-menu' onChange={ this.handleChange } value = { this.state.selectedBreed }>
+                {this.state.breeds.map(breed => (
+                    <option key={breed} value={breed}>
+                        {breed}
+                    </option>
+                ))}
+          </select>
         </Modal>
-        <button className="js-open-modal-button" onClick={this.openModal}>Open</button>
-        <img 
-            className= "js-cat-image" 
-            alt="Cat"
-            src={this.state.catImage}
-        />
+        <button className="js-open-modal-button" onClick={ this.openModal }>Open</button>
       </div>
-      
     );
   }
 }
