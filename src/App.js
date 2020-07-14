@@ -31,13 +31,15 @@ class App extends React.Component {
 
     await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${this.state.selectedBreed}`)
     .then((response) => response.json())
-    .then((data) => this.setState({ breedId: data.id }));
+    .then((data) => this.setState({ breedId: data[0].id }));
 
     console.log(this.state.breedId)
     
-    // fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=beng`)
-    // .then((response) => response.json())
-    // .then((data) => this.setState({ catImage: data[0].url }));
+    await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
+    .then((response) => response.json())
+    .then((data) => this.setState({ catImage: data[0].url }));
+
+    console.log(this.state.catImage)
   }
 
   handleChange = (e) => {
@@ -77,6 +79,7 @@ class App extends React.Component {
           </select>
         </Modal>
         <button className="js-open-modal-button" onClick={ this.openModal }>Open</button>
+        <img className="js-image-of-cat" src={this.state.catImage} alt="Cat" />
       </div>
     );
   }

@@ -61,12 +61,13 @@ describe("When running the app", () => {
 
     it("should call the api", () => {
       expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/breeds/search?q=`);
+      expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/images/search?breed_ids=undefined`)
     });
 
     it("should return an image of a cat", () => {
       expect(wrapper.find('.js-image-of-cat').length).toBe(1);
     });
   }); 
-  
+
 
 });
