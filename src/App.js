@@ -11,10 +11,13 @@ class App extends React.Component {
       value: "",
       breeds: [],
       selectBreed: "new cat",
+      breedId: null,
       catImage: null
     }
 
+    this.closeModal = this.closeModal.bind(this);
     this.changeBreed = this.changeBreed.bind(this);
+    this.changeCatImage = this.changeCatImage.bind(this);
   };
 
   openModal = () => {
@@ -27,10 +30,6 @@ class App extends React.Component {
     this.setState({
       isModalOpen:false
     });
-
-    fetch(`https://api.thecatapi.com/images/search?breed_id=${this.state.selectBreed}`)
-			.then((response) => response.json())
-			.then((data) => this.setState({ catImage: data.url }));
   }
 
   handleChange = (e) => {
@@ -46,6 +45,21 @@ class App extends React.Component {
 
     console.log(this.state.selectBreed);
   }
+
+  changeCatImage(){
+
+    fetch(`https://api.thecatapi.com/v1/breeds/search?q=${this.state.selectBreed}`)
+      .then((response) => response.json())
+      .then((data) => this.setState({ breedId: data.id }))
+    
+    
+    
+    fetch(`https://api.thecatapi.com/images/search?breed_id=${this.state.breedId}`)
+    .then((response) => response.json())
+    .then((data) => this.setState({ catImage: data[0].url }));
+
+  }
+ 
 
   componentDidMount() {
     let initialBreeds = [];
