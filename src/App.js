@@ -59,7 +59,6 @@ class App extends React.Component {
           return x.name
         });
 
-        // console.log(initialBreeds);
         this.setState({breeds: initialBreeds});
     }));
   }

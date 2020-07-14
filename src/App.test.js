@@ -42,9 +42,11 @@ describe("When running the app", () => {
       expect(fetch).toHaveBeenCalledWith("https://api.thecatapi.com/v1/breeds");
     });
 
-    it("should open the cat modal with a close button & a drop down list", () => {
+    it("should display a close button, heading & a drop down list", () => {
       expect(wrapper.find('.js-close-modal-button').length).toBe(1);
+      expect(wrapper.find('.js-close-modal-button').text()).toBe("Close");
       expect(wrapper.find('.js-select-cat-breed-menu').length).toBe(1);
+      expect(wrapper.find('.js-modal-title').text()).toBe("Choose Your Favorite Cat Breed");
     });
 
   });
