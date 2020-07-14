@@ -30,6 +30,8 @@ class App extends React.Component {
     this.setState({
       isModalOpen:false
     });
+
+    this.changeBreed();
   }
 
   handleChange = (e) => {
@@ -44,6 +46,8 @@ class App extends React.Component {
     })
 
     console.log(this.state.selectBreed);
+
+    this.changeCatImage();
   }
 
   changeCatImage(){
@@ -80,7 +84,7 @@ class App extends React.Component {
   render() {
     return(
       <div className="App">
-        <Modal onChange={this.changeBreed} 
+        <Modal 
               show={this.state.isModalOpen} 
               handleClose={this.closeModal} 
               handleChange={this.handleChange} 
@@ -91,7 +95,7 @@ class App extends React.Component {
         </Modal>
         <button className="js-open-modal-button" onClick={this.openModal}>Open</button>
         <img 
-            className= "cat-image" 
+            className= "js-cat-image" 
             alt="Cat"
             src={this.state.catImage}
         />

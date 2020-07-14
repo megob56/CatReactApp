@@ -40,4 +40,25 @@ describe("when running the app", () => {
    
   });
 
+  describe("When the modal is closed after selecting a cat breed", () => {
+    beforeAll(() => {
+      wrapper.setState({isModalOpen: true});
+      wrapper.setState({breedId: "CAT"})
+			wrapper.find(".js-close-modal-button").simulate("click");
+    });
+    
+    it("should close the modal", () => {
+      expect(wrapper.state().isModalOpen).toBe(false);
+    })
+
+    it("should display an image of a cat", () => {
+      expect(wrapper.find("js-cat-image").length).toBe(1);
+    })
+
+    it("should display an image of a cat of the selected breed", () => {
+      expect(wrapper.find("js-cat-image").prop("src")).toBe("https://api.thecatapi.com/images/search?breed_id=CAT");
+    })
+   
+  });
+
 });
