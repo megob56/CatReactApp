@@ -2,20 +2,37 @@ import React from "react";
 import { shallow } from "enzyme";
 import App from "./App";
 
-global.fetch = jest.fn(() =>
-	Promise.resolve({
+global.fetch = jest.fn(() => "default")
+  .mockImplementationOnce(() => Promise.resolve({
 		json: () =>
 			Promise.resolve([
 				{
           name: "catBreed",
 				},
 			]),
-	})
-);
+  }))
+  .mockImplementationOnce(() => Promise.resolve({
+    json: () =>
+      Promise.resolve([
+        {
+          id: "breedID",
+        },
+      ]),
+  })) 
+  .mockImplementationOnce(() => Promise.resolve({
+    json: () =>
+      Promise.resolve([
+        {
+          url: "catImageURL",
+        },
+      ]),
+  }))
+	
+
 
 describe("When running the app", () => {
-	const wrapper = shallow(<App />);
-	
+  const wrapper = shallow(<App />);
+  
 	it("should render the App", () => {
 		expect(wrapper.length).toBe(1); 
 	});
@@ -31,7 +48,7 @@ describe("When running the app", () => {
   
   describe("When clicking the open modal button", () => {
     beforeAll(() => {
-      wrapper.find('.js-open-modal-button').simulate('click')
+      wrapper.find('.js-open-modal-button').simulate('click');
     });
 
     it("should open the cat modal", () => {
@@ -51,9 +68,10 @@ describe("When running the app", () => {
 
   });
 
-  describe("When clicking the close modal button", () => {
+  describe("When clicking the close modal button after selecting a cat", () => {
     beforeAll(() => {
       wrapper.setState({isModalOpen: true});
+      wrapper.setState({selectedBreed: "test"}); 
       wrapper.find('.js-close-modal-button').simulate('click');
     });
 
@@ -62,12 +80,13 @@ describe("When running the app", () => {
     });
 
     it("should call the api", () => {
-      expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/breeds/search?q=`);
-      expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/images/search?breed_ids=undefined`)
+      expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/breeds/search?q=test`);
+      expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/images/search?breed_ids=breedID`);
     });
 
     it("should return an image of a cat", () => {
       expect(wrapper.find('.js-image-of-cat').length).toBe(1);
+      expect(wrapper.state().catImage).toBe("catImageURL");
     });
   }); 
 

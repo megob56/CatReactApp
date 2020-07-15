@@ -66,6 +66,7 @@ class App extends React.Component {
   render(){
     return(
       <div>
+        <button className="js-open-modal-button" onClick={ this.openModal }>Open</button>
         <Modal isOpen = { this.state.isModalOpen }>
           <button className="js-close-modal-button" onClick={ this.closeModal }>Close</button>
           <h1 className="js-modal-title">Choose Your Favorite Cat Breed</h1>
@@ -77,7 +78,6 @@ class App extends React.Component {
                 ))}
           </select>
         </Modal>
-        <button className="js-open-modal-button" onClick={ this.openModal }>Open</button>
         <img className="js-image-of-cat" src={this.state.catImage} alt="Cat" />
       </div>
     );
