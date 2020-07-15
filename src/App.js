@@ -65,10 +65,9 @@ class App extends React.Component {
 
   render(){
     return(
-      <div>
-        <button className="js-open-modal-button" onClick={ this.openModal }>Open</button>
+      <div className="App">
+        <button className="js-open-modal-button" onClick={ this.openModal }></button>
         <Modal isOpen = { this.state.isModalOpen }>
-          <button className="js-close-modal-button" onClick={ this.closeModal }>Close</button>
           <h1 className="js-modal-title">Choose Your Favorite Cat Breed</h1>
           <select className='js-select-cat-breed-menu' onChange={ this.handleChange } value = { this.state.selectedBreed }>
                 {this.state.breeds.map(breed => (
@@ -77,8 +76,12 @@ class App extends React.Component {
                     </option>
                 ))}
           </select>
+          <div className="close-button-div">
+            {this.state.selectedBreed && <button className="js-close-modal-button" onClick={ this.closeModal }>{ `Show me ${this.state.selectedBreed}`}</button>}
+          </div>
+          
         </Modal>
-        <img className="js-image-of-cat" src={this.state.catImage} alt="Cat" />
+        <div className="cat-box">{this.state.catImage && <img className="js-image-of-cat" src={this.state.catImage} alt="Cat" />}</div>
       </div>
     );
   }

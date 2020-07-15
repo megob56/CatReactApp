@@ -39,7 +39,6 @@ describe("When running the app", () => {
 
 	it("should display a open modal button", () => {
 		expect(wrapper.find(".js-open-modal-button").type()).toBe("button");
-		expect(wrapper.find(".js-open-modal-button").text()).toBe("Open");
 	});
 
 	it("should not display the cat modal", () => {
@@ -49,6 +48,7 @@ describe("When running the app", () => {
   describe("When clicking the open modal button", () => {
     beforeAll(() => {
       wrapper.find('.js-open-modal-button').simulate('click');
+      wrapper.setState({selectedBreed: "CuteCat"});
     });
 
     it("should open the cat modal", () => {
@@ -61,7 +61,7 @@ describe("When running the app", () => {
 
     it("should display a close button, heading & a drop down list", () => {
       expect(wrapper.find('.js-close-modal-button').length).toBe(1);
-      expect(wrapper.find('.js-close-modal-button').text()).toBe("Close");
+      expect(wrapper.find('.js-close-modal-button').text()).toBe("Show me CuteCat");
       expect(wrapper.find('.js-select-cat-breed-menu').length).toBe(1);
       expect(wrapper.find('.js-modal-title').text()).toBe("Choose Your Favorite Cat Breed");
       expect(wrapper.state().breeds).toStrictEqual(["catBreed"]);
@@ -91,6 +91,7 @@ describe("When running the app", () => {
       expect(wrapper.state().catImage).toBe("catImageURL");
     });
   }); 
+
 
 
 });

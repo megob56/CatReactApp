@@ -1,16 +1,32 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
 .js-open-modal-button {
-  display: block;
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  background: url("https://comps.canstockphoto.com/cartoon-cat-paw-prints-set-eps-vector_csp65647149.jpg");
+  background-position: 300px 375px;
+  border: 0;
+  outline: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.js-image-of-cat {
-  height: 800px;
-  width: 1600px;
-  
+.cat-box {
+  height: 100vh;
 }
+
+.cat-box img {
+  height: 100%;
+}
+
+/* .js-image-of-cat {
+  width: 100%; 
+} */
 
 
 
