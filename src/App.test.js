@@ -64,6 +64,7 @@ describe("When running the app", () => {
       expect(wrapper.find('.js-close-modal-button').text()).toBe("Close");
       expect(wrapper.find('.js-select-cat-breed-menu').length).toBe(1);
       expect(wrapper.find('.js-modal-title').text()).toBe("Choose Your Favorite Cat Breed");
+      expect(wrapper.state().breeds).toStrictEqual(["catBreed"]);
     });
 
   });
@@ -81,6 +82,7 @@ describe("When running the app", () => {
 
     it("should call the api", () => {
       expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/breeds/search?q=test`);
+      expect(wrapper.state().breedId).toBe("breedID");
       expect(fetch).toHaveBeenCalledWith(`https://api.thecatapi.com/v1/images/search?breed_ids=breedID`);
     });
 
