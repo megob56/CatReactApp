@@ -33,14 +33,14 @@ class App extends React.Component {
     });
 
     await fetch(`https://api.thecatapi.com/v1/breeds/search?q=${this.state.selectedBreed}`)
-    .then((response) => response.json())
-    .then((data) => this.setState({ breedId: data[0].id }));
+      .then((response) => response.json())
+      .then((data) => this.setState({ breedId: data[0].id }));
 
     console.log(this.state.breedId)
     
     await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`)
-    .then((response) => response.json())
-    .then((data) => this.setState({ catImage: data[0].url}));
+      .then((response) => response.json())
+      .then((data) => this.setState({ catImage: data[0].url}));
 
     console.log(`https://api.thecatapi.com/v1/images/search?breed_ids=${this.state.breedId}`);
     console.log(this.state.catImage);
