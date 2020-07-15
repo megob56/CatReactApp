@@ -88,7 +88,7 @@ class App extends React.Component {
           </div>
         </Modal>
         <div className="cat-box">
-          {this.state.loading && <img className="loading-symbol" alt="loading" src={"https://miro.medium.com/max/882/1*9EBHIOzhE1XfMYoKz1JcsQ.gif"}/>}
+          {this.state.loading && <img className="loading-symbol" alt="loading" src={"https://thumbs.gfycat.com/PotableEmbarrassedFrenchbulldog-small.gif"}/>}
           {this.state.catImage && <img className="js-image-of-cat" src={this.state.catImage} alt="Cat" />}
         </div>
       </div>
